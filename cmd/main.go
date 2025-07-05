@@ -2,6 +2,7 @@ package main
 
 import (
 	"devtasker/internal/handler"
+	"devtasker/internal/middleware"
 	"devtasker/internal/repository"
 	"devtasker/internal/service"
 	"devtasker/internal/utils"
@@ -17,6 +18,7 @@ func main() {
 	var th handler.TaskHandler = *handler.New(&ts)
 
 	app := fiber.New()
+	app.Use(middleware.Logger)
 	api := app.Group("/api")
 	handler.TaskRouter(api, th)
 
