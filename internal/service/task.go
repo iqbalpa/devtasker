@@ -3,6 +3,7 @@ package service
 import (
 	"devtasker/internal/model"
 	"devtasker/internal/repository"
+	"fmt"
 )
 
 type ITaskService interface {
@@ -24,6 +25,9 @@ func New(r *repository.ITaskRepository) *TaskService {
 }
 
 func (ts *TaskService) CreateTask(title, description string) (*model.Task, error) {
+	if title == "" || description == "" {
+		return nil, fmt.Errorf("title and description cannot be empty")
+	}
 	t, err := ts.r.CreateTask(title, description)
 	if err != nil {
 		return nil, err
@@ -48,6 +52,9 @@ func (ts *TaskService) GetAllTasks() ([]*model.Task, error) {
 }
 
 func (ts *TaskService) UpdateTask(id, title, description string, status model.TaskStatus) (*model.Task, error) {
+	if title == "" || description == "" || status == "" {
+		return nil, fmt.Errorf("title and description cannot be empty")
+	}
 	t, err := ts.r.UpdateTask(id, title, description, status)
 	if err != nil {
 		return nil, err
