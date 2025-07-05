@@ -1,0 +1,23 @@
+[
+  {
+    "id": "a7e9c9fa-0f91-4d3f-a72a-8b159a994f4d",
+    "title": "Write project proposal",
+    "description": "Draft the initial proposal for the DevTasker project.",
+    "status": "pending",
+    "created_at": "2025-07-05T08:00:00Z"
+  },
+  {
+    "id": "0f13e431-3b3a-41d3-b8ce-1ec58e6aa54a",
+    "title": "Implement task queue",
+    "description": "Develop the job queue and worker pool system in Go.",
+    "status": "in-progress",
+    "created_at": "2025-07-04T14:30:00Z"
+  },
+  {
+    "id": "6b65fcf6-77c1-4baf-9186-0b1f6c1cbe64",
+    "title": "Create README",
+    "description": "Write a comprehensive README for the GitHub repository.",
+    "status": "completed",
+    "created_at": "2025-07-03T10:15:00Z"
+  }
+]

@@ -2,6 +2,7 @@ package repository
 
 import (
 	"devtasker/internal/model"
+	"devtasker/internal/utils"
 	"fmt"
 	"time"
 
@@ -14,10 +15,6 @@ type ITaskRepository interface {
 	GetAllTasks() ([]*model.Task, error)
 	UpdateTask(id, title, description string, status model.TaskStatus) (*model.Task, error)
 	DeleteTask(id string) (*model.Task, error)
-	// ArchiveTask(id string) error
-	// UnarchiveTask(id string) error
-	// MarkTaskAsCompleted(id string) error
-	// MarkTaskAsInProgress(id string) error
 }
 
 type TaskRepository struct {
@@ -25,8 +22,13 @@ type TaskRepository struct {
 }
 
 func New() *TaskRepository {
+	dummy := utils.GetDummyData()
+	data := make(map[string]*model.Task)
+	for _, t := range dummy {
+		data[t.ID] = t
+	}
 	return &TaskRepository{
-		Tasks: make(map[string]*model.Task),
+		Tasks: data,
 	}
 }
 
