@@ -3,9 +3,12 @@ package main
 import (
 	"devtasker/internal/handler"
 	"devtasker/internal/middleware"
+	"devtasker/internal/model"
 	"devtasker/internal/repository"
 	"devtasker/internal/service"
 	"devtasker/internal/utils"
+
+	_ "github.com/lib/pq"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -13,7 +16,10 @@ import (
 func main() {
 	utils.InfoLogger.Println("App started!")
 
-	var tr repository.ITaskRepository = repository.New()
+	db := utils.ConnectDb()
+	db.AutoMigrate(&model.Task{})
+
+	var tr repository.ITaskRepository = repository.New(db)
 	var ts service.ITaskService = service.New(&tr)
 	var th handler.TaskHandler = *handler.New(&ts)
 

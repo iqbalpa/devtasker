@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
 type ITaskRepository interface {
@@ -19,9 +20,10 @@ type ITaskRepository interface {
 
 type TaskRepository struct {
 	Tasks map[string]*model.Task
+	db    *gorm.DB
 }
 
-func New() *TaskRepository {
+func New(db *gorm.DB) *TaskRepository {
 	dummy := utils.GetDummyData()
 	data := make(map[string]*model.Task)
 	for _, t := range dummy {
@@ -29,6 +31,7 @@ func New() *TaskRepository {
 	}
 	return &TaskRepository{
 		Tasks: data,
+		db:    db,
 	}
 }
 
