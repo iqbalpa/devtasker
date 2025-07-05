@@ -4,13 +4,14 @@ import (
 	"devtasker/internal/handler"
 	"devtasker/internal/repository"
 	"devtasker/internal/service"
-	"fmt"
+	"devtasker/internal/utils"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 func main() {
-	fmt.Println("Welcome!")
+	utils.InfoLogger.Println("App started!")
+
 	var tr repository.ITaskRepository = repository.New()
 	var ts service.ITaskService = service.New(&tr)
 	var th handler.TaskHandler = *handler.New(&ts)
