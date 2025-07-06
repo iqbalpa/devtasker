@@ -11,7 +11,7 @@ These are things that I want to implement here.
 - [x] Backend Endpoints
 - [x] HTTP Handler
 - [x] Validation and Logging
-- [ ] Database
+- [x] Database
 - [ ] Unit Testing
 - [ ] Monitoring (prometheus)
 - [ ] Docker
