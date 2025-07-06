@@ -7,6 +7,7 @@ import (
 	"devtasker/internal/service"
 	"fmt"
 
+	"github.com/ansrivas/fiberprometheus/v2"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/swagger"
 	"gorm.io/gorm"
@@ -20,6 +21,11 @@ func App(db *gorm.DB) *fiber.App {
 	var th handler.TaskHandler = *handler.New(&ts)
 
 	app := fiber.New()
+
+	prometheus := fiberprometheus.New("devtasker")
+	prometheus.RegisterAt(app, "/metrics")
+	app.Use(prometheus.Middleware)
+
 	app.Use(middleware.Logger)
 
 	app.Get("/doc/*", swagger.HandlerDefault)
