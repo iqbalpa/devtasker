@@ -66,12 +66,21 @@ func (tr *TaskRepository) UpdateTask(id, title, description string, status model
 	if result.Error != nil {
 		return model.Task{}, result.Error
 	}
-	return model.Task{}, nil
+	var task model.Task
+	result = tr.db.First(&task, "id = ?", id)
+	if result.Error != nil {
+		return model.Task{}, result.Error
+	}
+	return task, nil
 }
 
 func (tr *TaskRepository) DeleteTask(id string) (model.Task, error) {
 	var task model.Task
-	result := tr.db.Where("id = ?", id).Delete(task)
+	result := tr.db.First(&task, "id = ?", id)
+	if result.Error != nil {
+		return model.Task{}, result.Error
+	}
+	result = tr.db.Where("id = ?", id).Delete(task)
 	if result.Error != nil {
 		return model.Task{}, result.Error
 	}
