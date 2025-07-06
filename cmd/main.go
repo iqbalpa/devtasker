@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "devtasker/docs"
 	"devtasker/internal"
 	"devtasker/internal/utils"
 	"fmt"

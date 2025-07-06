@@ -10,6 +10,7 @@ These are things that I want to implement here.
 
 - [x] Backend Endpoints
 - [x] HTTP Handler
+- [x] API docs
 - [x] Validation and Logging
 - [x] Database
 - [ ] Unit Testing
