@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"io"
 	"os"
+
+	"gorm.io/gorm"
 )
 
 func readFile() []byte {
@@ -21,9 +23,14 @@ func readFile() []byte {
 	return byteVal
 }
 
-func GetDummyData() []*model.Task {
+func getDummyData() []*model.Task {
 	var tasks []*model.Task
 	byteVal := readFile()
 	json.Unmarshal(byteVal, &tasks)
 	return tasks
+}
+
+func SeedTasks(db *gorm.DB) {
+	data := getDummyData()
+	db.Save(data)
 }
