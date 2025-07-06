@@ -8,6 +8,7 @@ import (
 	"fmt"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/swagger"
 	"gorm.io/gorm"
 )
 
@@ -20,6 +21,9 @@ func App(db *gorm.DB) *fiber.App {
 
 	app := fiber.New()
 	app.Use(middleware.Logger)
+
+	app.Get("/doc/*", swagger.HandlerDefault)
+
 	api := app.Group("/api")
 	handler.TaskRouter(api, th)
 
