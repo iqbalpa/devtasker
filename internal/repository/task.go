@@ -2,8 +2,6 @@ package repository
 
 import (
 	"devtasker/internal/model"
-	"devtasker/internal/utils"
-	"fmt"
 	"time"
 
 	"github.com/google/uuid"
@@ -11,31 +9,24 @@ import (
 )
 
 type ITaskRepository interface {
-	CreateTask(title, description string) (*model.Task, error)
-	GetTaskByID(id string) (*model.Task, error)
-	GetAllTasks() ([]*model.Task, error)
-	UpdateTask(id, title, description string, status model.TaskStatus) (*model.Task, error)
-	DeleteTask(id string) (*model.Task, error)
+	CreateTask(title, description string) (model.Task, error)
+	GetTaskByID(id string) (model.Task, error)
+	GetAllTasks() ([]model.Task, error)
+	UpdateTask(id, title, description string, status model.TaskStatus) (model.Task, error)
+	DeleteTask(id string) (model.Task, error)
 }
 
 type TaskRepository struct {
-	Tasks map[string]*model.Task
-	db    *gorm.DB
+	db *gorm.DB
 }
 
 func New(db *gorm.DB) *TaskRepository {
-	dummy := utils.GetDummyData()
-	data := make(map[string]*model.Task)
-	for _, t := range dummy {
-		data[t.ID] = t
-	}
 	return &TaskRepository{
-		Tasks: data,
-		db:    db,
+		db: db,
 	}
 }
 
-func (tr *TaskRepository) CreateTask(title, description string) (*model.Task, error) {
+func (tr *TaskRepository) CreateTask(title, description string) (model.Task, error) {
 	id := uuid.NewString()
 	t := model.Task{
 		ID:          id,
@@ -44,39 +35,45 @@ func (tr *TaskRepository) CreateTask(title, description string) (*model.Task, er
 		Status:      model.Pending,
 		CreatedAt:   time.Now().String(),
 	}
-	tr.Tasks[id] = &t
-	return &t, nil
-}
-
-func (tr *TaskRepository) GetTaskByID(id string) (*model.Task, error) {
-	t, ok := tr.Tasks[id]
-	if !ok {
-		return nil, fmt.Errorf("task with id %s is not found", id)
-	}
+	tr.db.Save(t)
 	return t, nil
 }
 
-func (tr *TaskRepository) GetAllTasks() ([]*model.Task, error) {
-	tasks := []*model.Task{}
-	for _, v := range tr.Tasks {
-		tasks = append(tasks, v)
+func (tr *TaskRepository) GetTaskByID(id string) (model.Task, error) {
+	var task model.Task
+	result := tr.db.First(&task, "id = ?", id)
+	if result.Error != nil {
+		return model.Task{}, result.Error
+	}
+	return task, nil
+}
+
+func (tr *TaskRepository) GetAllTasks() ([]model.Task, error) {
+	var tasks []model.Task
+	result := tr.db.Find(&tasks)
+	if result.Error != nil {
+		return []model.Task{}, result.Error
 	}
 	return tasks, nil
 }
 
-func (tr *TaskRepository) UpdateTask(id, title, description string, status model.TaskStatus) (*model.Task, error) {
-	t := tr.Tasks[id]
-	t.Title = title
-	t.Description = description
-	t.Status = status
-	return t, nil
+func (tr *TaskRepository) UpdateTask(id, title, description string, status model.TaskStatus) (model.Task, error) {
+	result := tr.db.Model(&model.Task{}).Where("id = ?", id).Updates(map[string]interface{}{
+		"title":       title,
+		"description": description,
+		"status":      status,
+	})
+	if result.Error != nil {
+		return model.Task{}, result.Error
+	}
+	return model.Task{}, nil
 }
 
-func (tr *TaskRepository) DeleteTask(id string) (*model.Task, error) {
-	t, ok := tr.Tasks[id]
-	if !ok {
-		return nil, fmt.Errorf("task with id %s is not found", id)
+func (tr *TaskRepository) DeleteTask(id string) (model.Task, error) {
+	var task model.Task
+	result := tr.db.Where("id = ?", id).Delete(task)
+	if result.Error != nil {
+		return model.Task{}, result.Error
 	}
-	delete(tr.Tasks, id)
-	return t, nil
+	return task, nil
 }
