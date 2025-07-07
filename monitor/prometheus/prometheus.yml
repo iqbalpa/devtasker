@@ -1,0 +1,11 @@
+global:
+  scrape_interval: 5s
+scrape_configs:
+- job_name: devtasker
+  honor_timestamps: true
+  scrape_interval: 5s
+  metrics_path: /metrics
+  scheme: http
+  static_configs:
+  - targets:
+    - localhost:3000
