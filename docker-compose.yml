@@ -9,13 +9,8 @@ services:
     restart: unless-stopped
     networks:
       - monitor
-    environment:
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_USER=postgres
-      - DB_PASSWORD=iqbalpahlevi
-      - DB_NAME=devtasker
-      - APP_ENV=dev
+    env_file:
+      - .devtasker.env
     depends_on:
       - postgres
 
@@ -25,10 +20,8 @@ services:
     restart: unless-stopped
     networks:
       - monitor
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=iqbalpahlevi
-      - POSTGRES_DB=devtasker
+    env_file:
+      - .postgres.env
     volumes:
       - db_data:/var/lib/postgresql/data
     healthcheck:
@@ -62,10 +55,8 @@ services:
     networks:
       - monitor
     restart: unless-stopped
-    environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=grafana
-      - GF_SERVER_HTTP_PORT=3001
+    env_file:
+      - .grafana.env
     volumes:
       - ./monitor/grafana:/etc/grafana/provisioning/datasources
       - grafana_data:/grafana
