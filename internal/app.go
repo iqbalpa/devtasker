@@ -21,6 +21,9 @@ func App(db *gorm.DB) *fiber.App {
 	var th handler.TaskHandler = *handler.New(&ts)
 
 	app := fiber.New()
+	app.Get("/health", func(c *fiber.Ctx) error {
+		return c.SendStatus(fiber.StatusOK)
+	})
 
 	prometheus := fiberprometheus.New("devtasker")
 	prometheus.RegisterAt(app, "/metrics")

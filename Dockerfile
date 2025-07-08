@@ -18,6 +18,9 @@ RUN go build -v -o /usr/local/bin/app ./cmd
 # Stage 2: Final stage
 FROM alpine:3.20
 
+# Install curl for healthcheck
+RUN apk add --no-cache curl
+
 # Set working directory
 WORKDIR /usr/src/app
 
