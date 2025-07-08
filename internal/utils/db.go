@@ -28,7 +28,7 @@ func init() {
 
 func ConnectDb() *gorm.DB {
 	fmt.Println("Connecting to DB...")
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Jakarta",
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
 		host,
 		user,
 		password,

@@ -1,4 +1,38 @@
 services:
+  devtasker:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: devtasker
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    networks:
+      - monitor
+    env_file:
+      - .devtasker.env
+    depends_on:
+      - postgres
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 10s
+      retries: 5
+
+  postgres:
+    image: postgres
+    container_name: postgres
+    restart: unless-stopped
+    networks:
+      - monitor
+    env_file:
+      - .postgres.env
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      retries: 5
+
   prometheus:
     image: prom/prometheus
     container_name: prometheus
@@ -8,28 +42,38 @@ services:
       - 9090:9090             # host:container
     restart: unless-stopped
     networks:
-      - monitor-net
+      - monitor
     volumes:
       - ./monitor/prometheus:/etc/prometheus
       - prom_data:/prometheus
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:9090/-/healthy"]
+      interval: 10s
+      retries: 5
 
   grafana:
     image: grafana/grafana
     container_name: grafana
     ports:
-      - 3001:3000
+      - 3001:3001
     networks:
-      - monitor-net
+      - monitor
     restart: unless-stopped
-    environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=grafana
+    env_file:
+      - .grafana.env
     volumes:
       - ./monitor/grafana:/etc/grafana/provisioning/datasources
+      - grafana_data:/grafana
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3001"]
+      interval: 10s
+      retries: 5
 
 volumes:
+  db_data:
   prom_data:
+  grafana_data:
 
 networks:
-  monitor-net:
+  monitor:
     driver: bridge
