@@ -14,7 +14,7 @@ These are things that I want to implement here.
 - [x] Validation and Logging
 - [x] Database
 - [ ] Unit Testing
-- [ ] Monitoring (prometheus)
-- [ ] Docker
+- [x] Monitoring (prometheus)
+- [x] Docker
 - [ ] GraphQL API
 - [ ] gRPC Layer
