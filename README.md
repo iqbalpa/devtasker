@@ -17,5 +17,6 @@ These are things that I want to implement here.
 - [x] Monitoring (prometheus)
 - [x] Docker
 - [x] CI/CD
+- [x] Reverse Proxy (nginx)
 - [ ] GraphQL API
 - [ ] gRPC Layer
