@@ -16,5 +16,6 @@ These are things that I want to implement here.
 - [ ] Unit Testing
 - [x] Monitoring (prometheus)
 - [x] Docker
+- [x] CI/CD
 - [ ] GraphQL API
 - [ ] gRPC Layer
