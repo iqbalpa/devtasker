@@ -12,6 +12,10 @@ on:
     branches:
       - master
       - '**/ci**'
+    paths-ignore:
+      - '*.md'
+      - .gitignore
+      - '**/docs/**'
 
 jobs:
   publish:
