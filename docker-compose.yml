@@ -82,10 +82,10 @@ services:
       - grafana
     networks:
       - monitor
-    # healthcheck:
-    #   test: ["CMD", "wget", "--spider", "-q", "http://localhost"]
-    #   interval: 10s
-    #   retries: 5
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://devtasker:3000/health"] # check if nginx can reach devtasker
+      interval: 10s
+      retries: 5
 
 volumes:
   db_data:
