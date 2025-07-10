@@ -1,0 +1,19 @@
+apiVersion: v1
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 5s
+    scrape_configs:
+    - job_name: devtasker
+      honor_timestamps: true
+      scrape_interval: 5s
+      metrics_path: /metrics
+      scheme: http
+      static_configs:
+      - targets:
+        - devtasker:3000
+kind: ConfigMap
+metadata:
+  labels:
+    io.kompose.service: prometheus
+  name: prometheus-cm0

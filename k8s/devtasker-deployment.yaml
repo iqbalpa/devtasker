@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.36.0 (ae2a39403)
+  labels:
+    io.kompose.service: devtasker
+  name: devtasker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: devtasker
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.36.0 (ae2a39403)
+      labels:
+        io.kompose.service: devtasker
+    spec:
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: devtasker-env
+          image: iqbalpa/go-devtasker:latest
+          livenessProbe:
+            exec:
+              command:
+                - curl
+                - -f
+                - http://localhost:3000/health
+            failureThreshold: 5
+            periodSeconds: 10
+          name: devtasker
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+      restartPolicy: Always

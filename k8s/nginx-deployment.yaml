@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.36.0 (ae2a39403)
+  labels:
+    io.kompose.service: nginx
+  name: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: nginx
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.36.0 (ae2a39403)
+      labels:
+        io.kompose.service: nginx
+    spec:
+      containers:
+        - image: nginx:alpine
+          livenessProbe:
+            exec:
+              command:
+                - wget
+                - --spider
+                - -q
+                - http://devtasker:3000/health
+            failureThreshold: 5
+            periodSeconds: 10
+          name: nginx
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /etc/nginx/conf.d/default.conf
+              name: nginx-cm0
+              readOnly: true
+              subPath: default.conf
+      restartPolicy: Always
+      volumes:
+        - configMap:
+            items:
+              - key: default.conf
+                path: default.conf
+            name: nginx-cm0
+          name: nginx-cm0
