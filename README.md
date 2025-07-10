@@ -33,6 +33,7 @@ These are things that I want to implement here.
 - **Nginx Reverse Proxy:** Manages and routes traffic to the application and monitoring services.
 - **Docker-Compose:** For easy setup and deployment of the entire application stack.
 - **Live Reloading:** With Air for a better development experience.
+- **Kubernetes Deployment:** Ready for deployment in a Kubernetes environment.
 
 ## Getting Started
 
