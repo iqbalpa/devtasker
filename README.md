@@ -73,6 +73,13 @@ The application will be accessible at `http://localhost`.
    - **Grafana:** `http://<minikube-ip>:31001`
    - **Prometheus:** `http://<minikube-ip>:31002`
 
+## Kubernetes & Minikube
+
+Here, minikube is to used for orchestrate the containerized apps (devtasker, nginx, prometheus, grafana, and postgres). Basically, minikube will create a Node and run the pods there. Here, I create one container per pod. 
+
+I use Kompose `kompose convert` to directly translate my `docker-compose.yml` into k8s configurations (`k8s/`). I need some adjustment on the generated configurations. I need to add `type: NodePort` for nginx, prometheus, and grafana to make it accessible from external. Then, I need to update the image for devtasker using public image in dockerhub. 
+
+Then you can run `minikube service <nginx/grafana/prometheus>` and it will automatically open the service in your web browser.
 
 ## API Endpoints
 
