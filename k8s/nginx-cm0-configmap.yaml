@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  default.conf: "# Limit each IP address can make 10 request/s\nlimit_req_zone $binary_remote_addr zone=mylimit:10m rate=10r/s;\n\nserver {\n    listen 80;\n\n    # Reverse proxy for devtasker, from localhost:3000/ to localhost/\n    location / {\n        proxy_pass http://devtasker:3000;\n        proxy_set_header Host $host; \n        proxy_set_header X-Real-IP $remote_addr;\n        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n        proxy_redirect off;\n    }\n\n    # Apply the rate limiter for these endpoint and methods\n    location /api/task {\n        limit_req zone=mylimit burst=20;\n        proxy_pass http://devtasker:3000;\n        proxy_set_header Host $host; \n        proxy_set_header X-Real-IP $remote_addr;\n        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n        proxy_redirect off;\n        \n    }\n\n    # Disable logging for /health\n    location = /health {\n        proxy_pass http://devtasker:3000;\n        proxy_set_header Host $host; \n        proxy_set_header X-Real-IP $remote_addr;\n        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n        proxy_redirect off;\n        access_log off;\n    }\n}\n"
+kind: ConfigMap
+metadata:
+  annotations:
+    use-subpath: "true"
+  labels:
+    io.kompose.service: nginx
+  name: nginx-cm0

@@ -1,0 +1,13 @@
+apiVersion: v1
+data:
+  APP_ENV: dev
+  DB_HOST: postgres
+  DB_NAME: devtasker
+  DB_PASSWORD: iqbalpahlevi
+  DB_PORT: "5432"
+  DB_USER: postgres
+kind: ConfigMap
+metadata:
+  labels:
+    io.kompose.service: devtasker-devtasker-env
+  name: devtasker-env

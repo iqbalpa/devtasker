@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  POSTGRES_DB: devtasker
+  POSTGRES_PASSWORD: iqbalpahlevi
+  POSTGRES_USER: postgres
+kind: ConfigMap
+metadata:
+  labels:
+    io.kompose.service: postgres-postgres-env
+  name: postgres-env
