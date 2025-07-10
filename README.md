@@ -18,6 +18,7 @@ These are things that I want to implement here.
 - [x] Docker
 - [x] CI/CD
 - [x] Reverse Proxy (nginx)
+- [x] Containers Orchestration (k8s & minikube)
 - [ ] GraphQL API
 - [ ] gRPC Layer
 
