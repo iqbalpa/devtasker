@@ -35,23 +35,44 @@ These are things that I want to implement here.
 
 ## Getting Started
 
-To get the application running locally, follow these steps:
+To get the application running locally, follow these steps after cloning the repository:
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/your-username/devtasker.git
-   cd devtasker
-   ```
+### Docker Compose
 
-2. **Set up environment variables:**
+1. **Set up environment variables:**
    Create `.devtasker.env`, `.grafana.env`, and `.postgres.env` from the provided `.env.example` files and customize them if needed.
 
-3. **Run with Docker Compose:**
+2. **Run with Docker Compose:**
    ```bash
    docker-compose up -d
    ```
 
 The application will be accessible at `http://localhost`.
+
+### Minikube
+
+1. **Start Minikube:**
+   ```bash
+   minikube start
+   ```
+
+2. **Apply Kubernetes configurations:**
+   ```bash
+   kubectl apply -f k8s/
+   ```
+
+3. **Get Minikube IP:**
+   ```bash
+   minikube ip
+   ```
+
+4. **Access the services:**
+   - **Application:** `http://<minikube-ip>:31000`
+   - **Swagger Docs:** `http://<minikube-ip>:31000/doc`
+   - **Health Check:** `http://<minikube-ip>:31000/health`
+   - **Grafana:** `http://<minikube-ip>:31001`
+   - **Prometheus:** `http://<minikube-ip>:31002`
+
 
 ## API Endpoints
 
