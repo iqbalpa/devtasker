@@ -99,8 +99,7 @@ func (th *TaskHandler) GetTaskByID(c *fiber.Ctx) error {
 // @Param        id      path      string                  true  "Task ID"
 // @Param        request body      model.UpdateTaskRequest true  "Update Task Body"
 // @Success      200     {object}  model.Task
-// @Failure      400     {object}  error
-// @Failure      404     {object}  error
+// @Failure      500     {object}  error
 // @Router       /api/task/{id} [patch]
 func (th *TaskHandler) UpdateTask(c *fiber.Ctx) error {
 	id := c.Params("id")
@@ -129,7 +128,7 @@ func (th *TaskHandler) UpdateTask(c *fiber.Ctx) error {
 // @Produce      json
 // @Param        id   path      string  true  "Task ID"
 // @Success      200  {object}  model.Task
-// @Failure      404  {object}  error
+// @Failure      500  {object}  error
 // @Router       /api/task/{id} [delete]
 func (th *TaskHandler) DeleteTask(c *fiber.Ctx) error {
 	id := c.Params("id")

@@ -103,8 +103,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/model.Task'
-        "404":
-          description: Not Found
+        "500":
+          description: Internal Server Error
           schema: {}
       summary: Delete a task
       tags:
@@ -153,11 +153,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/model.Task'
-        "400":
-          description: Bad Request
-          schema: {}
-        "404":
-          description: Not Found
+        "500":
+          description: Internal Server Error
           schema: {}
       summary: Update a task
       tags:

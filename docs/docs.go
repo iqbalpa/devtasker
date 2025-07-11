@@ -135,8 +135,8 @@ const docTemplate = `{
                             "$ref": "#/definitions/model.Task"
                         }
                     },
-                    "404": {
-                        "description": "Not Found",
+                    "500": {
+                        "description": "Internal Server Error",
                         "schema": {}
                     }
                 }
@@ -178,12 +178,8 @@ const docTemplate = `{
                             "$ref": "#/definitions/model.Task"
                         }
                     },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {}
-                    },
-                    "404": {
-                        "description": "Not Found",
+                    "500": {
+                        "description": "Internal Server Error",
                         "schema": {}
                     }
                 }
