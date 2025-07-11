@@ -17,8 +17,8 @@ func App(db *gorm.DB) *fiber.App {
 	fmt.Println("Initializing App...")
 
 	var tr repository.ITaskRepository = repository.New(db)
-	var ts service.ITaskService = service.New(&tr)
-	var th handler.TaskHandler = *handler.New(&ts)
+	var ts service.ITaskService = service.New(tr)
+	var th handler.TaskHandler = *handler.New(ts)
 
 	app := fiber.New()
 	app.Get("/health", func(c *fiber.Ctx) error {

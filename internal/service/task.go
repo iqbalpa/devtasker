@@ -18,9 +18,9 @@ type TaskService struct {
 	r repository.ITaskRepository
 }
 
-func New(r *repository.ITaskRepository) *TaskService {
+func New(r repository.ITaskRepository) *TaskService {
 	return &TaskService{
-		r: *r,
+		r: r,
 	}
 }
 

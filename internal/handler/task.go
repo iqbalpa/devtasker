@@ -24,9 +24,9 @@ type TaskHandler struct {
 	s service.ITaskService
 }
 
-func New(s *service.ITaskService) *TaskHandler {
+func New(s service.ITaskService) *TaskHandler {
 	return &TaskHandler{
-		s: *s,
+		s: s,
 	}
 }
 
