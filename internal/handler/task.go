@@ -49,7 +49,7 @@ func (th *TaskHandler) CreateTask(c *fiber.Ctx) error {
 	t, err := th.s.CreateTask(ctr.Title, ctr.Description)
 	if err != nil {
 		utils.ErrorLogger.Println("Failed to create a new task:\n", err)
-		return c.JSON(err)
+		return c.Status(fiber.StatusInternalServerError).JSON(err)
 	}
 	return c.JSON(t)
 }
@@ -66,7 +66,7 @@ func (th *TaskHandler) GetAllTasks(c *fiber.Ctx) error {
 	tasks, err := th.s.GetAllTasks()
 	if err != nil {
 		utils.ErrorLogger.Println("Failed to get all tasks:\n", err)
-		return c.JSON(err)
+		return c.Status(fiber.StatusInternalServerError).JSON(err)
 	}
 	return c.JSON(tasks)
 }
@@ -85,7 +85,7 @@ func (th *TaskHandler) GetTaskByID(c *fiber.Ctx) error {
 	t, err := th.s.GetTaskByID(id)
 	if err != nil {
 		utils.ErrorLogger.Printf("Failed to get task with id %s:\n%s", id, err)
-		return c.JSON(err)
+		return c.Status(fiber.StatusNotFound).JSON(err)
 	}
 	return c.JSON(t)
 }
@@ -99,8 +99,7 @@ func (th *TaskHandler) GetTaskByID(c *fiber.Ctx) error {
 // @Param        id      path      string                  true  "Task ID"
 // @Param        request body      model.UpdateTaskRequest true  "Update Task Body"
 // @Success      200     {object}  model.Task
-// @Failure      400     {object}  error
-// @Failure      404     {object}  error
+// @Failure      500     {object}  error
 // @Router       /api/task/{id} [patch]
 func (th *TaskHandler) UpdateTask(c *fiber.Ctx) error {
 	id := c.Params("id")
@@ -117,7 +116,7 @@ func (th *TaskHandler) UpdateTask(c *fiber.Ctx) error {
 	)
 	if err != nil {
 		utils.ErrorLogger.Printf("Failed to update task with id %s:\n%s", id, err)
-		return c.JSON(err)
+		return c.Status(fiber.StatusInternalServerError).JSON(err)
 	}
 	return c.JSON(t)
 }
@@ -129,14 +128,14 @@ func (th *TaskHandler) UpdateTask(c *fiber.Ctx) error {
 // @Produce      json
 // @Param        id   path      string  true  "Task ID"
 // @Success      200  {object}  model.Task
-// @Failure      404  {object}  error
+// @Failure      500  {object}  error
 // @Router       /api/task/{id} [delete]
 func (th *TaskHandler) DeleteTask(c *fiber.Ctx) error {
 	id := c.Params("id")
 	t, err := th.s.DeleteTask(id)
 	if err != nil {
 		utils.ErrorLogger.Printf("Failed to delete task with id %s:\n%s", id, err)
-		return c.JSON(err)
+		return c.Status(fiber.StatusInternalServerError).JSON(err)
 	}
 	return c.JSON(t)
 }
