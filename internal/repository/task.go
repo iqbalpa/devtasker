@@ -30,7 +30,7 @@ func (tr *TaskRepository) CreateTask(title, description string) (model.Task, err
 		Description: description,
 		Status:      model.Pending,
 	}
-	tr.db.Save(t)
+	tr.db.Create(&t)
 	return t, nil
 }
 
