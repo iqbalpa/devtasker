@@ -46,5 +46,6 @@ func ConnectDb() *gorm.DB {
 func MigrateDb(db *gorm.DB) {
 	fmt.Println("Running DB migrations...")
 	db.AutoMigrate(&model.Task{})
+	db.AutoMigrate(&model.User{})
 	fmt.Println("DB Migrations is succeed!")
 }

@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"devtasker/internal/model"
+	"devtasker/internal/dto"
 	"devtasker/internal/service"
 	"devtasker/internal/utils"
 
@@ -41,7 +41,7 @@ func New(s service.ITaskService) *TaskHandler {
 // @Failure      500  {object}  error
 // @Router       /api/task [post]
 func (th *TaskHandler) CreateTask(c *fiber.Ctx) error {
-	ctr := new(model.CreateTaskRequest)
+	ctr := new(dto.CreateTaskRequest)
 	if err := c.BodyParser(ctr); err != nil {
 		utils.ErrorLogger.Println("Failed to parse the body:\n", c.Body())
 		return err
@@ -103,7 +103,7 @@ func (th *TaskHandler) GetTaskByID(c *fiber.Ctx) error {
 // @Router       /api/task/{id} [patch]
 func (th *TaskHandler) UpdateTask(c *fiber.Ctx) error {
 	id := c.Params("id")
-	b := new(model.UpdateTaskRequest)
+	b := new(dto.UpdateTaskRequest)
 	if err := c.BodyParser(b); err != nil {
 		utils.ErrorLogger.Println("Failed to parse the body:\n", c.Body())
 		return err
