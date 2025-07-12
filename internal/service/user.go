@@ -47,5 +47,9 @@ func (us *UserService) Login(username, pass string) (string, error) {
 	if !res {
 		return "", fmt.Errorf("username or password is wrong")
 	}
-	return "<token>", nil
+	token, err := utils.GenerateToken(u)
+	if err != nil {
+		return "", err
+	}
+	return token, nil
 }
