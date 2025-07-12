@@ -2,9 +2,7 @@ package repository
 
 import (
 	"devtasker/internal/model"
-	"time"
 
-	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -27,13 +25,10 @@ func New(db *gorm.DB) *TaskRepository {
 }
 
 func (tr *TaskRepository) CreateTask(title, description string) (model.Task, error) {
-	id := uuid.NewString()
 	t := model.Task{
-		ID:          id,
 		Title:       title,
 		Description: description,
 		Status:      model.Pending,
-		CreatedAt:   time.Now().String(),
 	}
 	tr.db.Save(t)
 	return t, nil
