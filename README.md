@@ -35,45 +35,75 @@ These are things that I want to implement here.
 - **Live Reloading:** With Air for a better development experience.
 - **Kubernetes Deployment:** Ready for deployment in a Kubernetes environment.
 
-## Getting Started
+## How to Run
 
-To get the application running locally, follow these steps after cloning the repository:
+### Development
 
-### Docker Compose
+To run the application in a development environment using `air` for live reloading, follow these steps:
 
-1. **Set up environment variables:**
-   Create `.devtasker.env`, `.grafana.env`, and `.postgres.env` from the provided `.env.example` files and customize them if needed.
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/your-username/devtasker.git
+    cd devtasker
+    ```
 
-2. **Run with Docker Compose:**
-   ```bash
-   docker-compose up -d
-   ```
+2.  **Set up environment variables:**
+    Create a `.env` file from the provided `.env.example` and customize it if needed.
+    ```bash
+    cp .env.example .env
+    ```
 
-The application will be accessible at `http://localhost`.
+3.  **Install dependencies:**
+    ```bash
+    go mod tidy
+    ```
 
-### Minikube
+4.  **Run the application with Air:**
+    Make sure you have `air` installed (`go install github.com/cosmtrek/air@latest`).
+    ```bash
+    air
+    ```
+    The application will be running at `http://localhost:3000`.
 
-1. **Start Minikube:**
-   ```bash
-   minikube start
-   ```
+### Production
 
-2. **Apply Kubernetes configurations:**
-   ```bash
-   kubectl apply -f k8s/
-   ```
+You can run the application in a production-like environment using either Docker Compose or Kubernetes (with Minikube).
 
-3. **Get Minikube IP:**
-   ```bash
-   minikube ip
-   ```
+#### Docker Compose
 
-4. **Access the services:**
-   - **Application:** `http://<minikube-ip>:31000`
-   - **Swagger Docs:** `http://<minikube-ip>:31000/doc`
-   - **Health Check:** `http://<minikube-ip>:31000/health`
-   - **Grafana:** `http://<minikube-ip>:31001`
-   - **Prometheus:** `http://<minikube-ip>:31002`
+1.  **Set up environment variables:**
+    Create `.devtasker.env`, `.grafana.env`, and `.postgres.env` from the provided `.env.example` files and customize them if needed.
+
+2.  **Run with Docker Compose:**
+    ```bash
+    docker-compose up -d
+    ```
+
+    The application will be accessible at `http://localhost`.
+
+#### Kubernetes (Minikube)
+
+1.  **Start Minikube:**
+    ```bash
+    minikube start
+    ```
+
+2.  **Apply Kubernetes configurations:**
+    ```bash
+    kubectl apply -f k8s/
+    ```
+
+3.  **Get Minikube IP:**
+    ```bash
+    minikube ip
+    ```
+
+4.  **Access the services:**
+    - **Application:** `http://<minikube-ip>:31000`
+    - **Swagger Docs:** `http://<minikube-ip>:31000/doc`
+    - **Health Check:** `http://<minikube-ip>:31000/health`
+    - **Grafana:** `http://<minikube-ip>:31001`
+    - **Prometheus:** `http://<minikube-ip>:31002`
 
 ## Kubernetes & Minikube
 
@@ -107,9 +137,9 @@ All endpoints are prefixed with `/api`.
 
 Contributions are welcome! Please follow these steps:
 
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature/your-feature-name`).
-3. Make your changes.
-4. Commit your changes (`git commit -m 'Add some feature'`).
-5. Push to the branch (`git push origin feature/your-feature-name`).
-6. Open a pull request.
+1.  Fork the repository.
+2.  Create a new branch (`git checkout -b feature/your-feature-name`).
+3.  Make your changes.
+4.  Commit your changes (`git commit -m 'Add some feature'`).
+5.  Push to the branch (`git push origin feature/your-feature-name`).
+6.  Open a pull request.
