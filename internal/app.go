@@ -36,7 +36,9 @@ func App(db *gorm.DB) *fiber.App {
 	prometheus.RegisterAt(app, "/metrics")
 	app.Use(prometheus.Middleware)
 
+	// Middleware
 	app.Use(middleware.Logger)
+	app.Use(middleware.Authorization)
 
 	// API Doc
 	app.Get("/doc/*", swagger.HandlerDefault)
