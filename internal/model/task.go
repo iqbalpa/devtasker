@@ -1,5 +1,7 @@
 package model
 
+import "time"
+
 type TaskStatus string
 
 const (
@@ -11,9 +13,10 @@ const (
 )
 
 type Task struct {
-	ID          string     `json:"id"`
+	ID          string     `json:"id" gorm:"type:uuid;default:gen_random_uuid();primaryKey"`
 	Title       string     `json:"title"`
 	Description string     `json:"description"`
 	Status      TaskStatus `json:"status"`
-	CreatedAt   string     `json:"created_at"`
+	CreatedAt   time.Time  `json:"created_at"`
+	UpdatedAt   time.Time  `json:"updated_at"`
 }
