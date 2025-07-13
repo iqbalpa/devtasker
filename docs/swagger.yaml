@@ -1,8 +1,33 @@
 definitions:
-  model.CreateTaskRequest:
+  dto.CreateTaskRequest:
     properties:
       description:
         type: string
+      title:
+        type: string
+    type: object
+  dto.LoginUserRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  dto.RegisterUserRequest:
+    properties:
+      name:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  dto.UpdateTaskRequest:
+    properties:
+      description:
+        type: string
+      status:
+        $ref: '#/definitions/model.TaskStatus'
       title:
         type: string
     type: object
@@ -17,6 +42,8 @@ definitions:
       status:
         $ref: '#/definitions/model.TaskStatus'
       title:
+        type: string
+      updated_at:
         type: string
     type: object
   model.TaskStatus:
@@ -33,18 +60,74 @@ definitions:
     - Completed
     - Archived
     - Deleted
-  model.UpdateTaskRequest:
+  model.User:
     properties:
-      description:
+      created_at:
         type: string
-      status:
-        $ref: '#/definitions/model.TaskStatus'
-      title:
+      id:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      updated_at:
+        type: string
+      username:
         type: string
     type: object
 info:
   contact: {}
 paths:
+  /api/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login a user and get a JWT
+      parameters:
+      - description: request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoginUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema: {}
+      summary: Login a user
+      tags:
+      - auth
+  /api/auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user
+      parameters:
+      - description: request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.RegisterUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.User'
+        "500":
+          description: Internal Server Error
+          schema: {}
+      summary: Register a new user
+      tags:
+      - auth
   /api/task:
     get:
       description: Retrieve a list of all tasks
@@ -73,7 +156,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/model.CreateTaskRequest'
+          $ref: '#/definitions/dto.CreateTaskRequest'
       produces:
       - application/json
       responses:
@@ -145,7 +228,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/model.UpdateTaskRequest'
+          $ref: '#/definitions/dto.UpdateTaskRequest'
       produces:
       - application/json
       responses:

@@ -9,7 +9,9 @@ import (
 )
 
 func Authorization(c *fiber.Ctx) error {
-	if strings.Contains(c.Path(), "auth") {
+	if strings.Contains(c.Path(), "auth") ||
+		strings.Contains(c.Path(), "doc") ||
+		strings.Contains(c.Path(), "health") {
 		return c.Next()
 	}
 

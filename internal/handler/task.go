@@ -36,7 +36,7 @@ func New(s service.ITaskService) *TaskHandler {
 // @Tags         task
 // @Accept       json
 // @Produce      json
-// @Param        request body model.CreateTaskRequest true "request body"
+// @Param        request body dto.CreateTaskRequest true "request body"
 // @Success      200  {object}  model.Task
 // @Failure      500  {object}  error
 // @Router       /api/task [post]
@@ -97,7 +97,7 @@ func (th *TaskHandler) GetTaskByID(c *fiber.Ctx) error {
 // @Accept       json
 // @Produce      json
 // @Param        id      path      string                  true  "Task ID"
-// @Param        request body      model.UpdateTaskRequest true  "Update Task Body"
+// @Param        request body      dto.UpdateTaskRequest true  "Update Task Body"
 // @Success      200     {object}  model.Task
 // @Failure      500     {object}  error
 // @Router       /api/task/{id} [patch]

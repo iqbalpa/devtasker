@@ -27,6 +27,16 @@ func NewAuthHandler(s service.IUserService) *AuthHandler {
 	}
 }
 
+// Register
+// @Summary      Register a new user
+// @Description  Register a new user
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Param        request body dto.RegisterUserRequest true "request body"
+// @Success      200  {object}  model.User
+// @Failure      500  {object}  error
+// @Router       /api/auth/register [post]
 func (ah *AuthHandler) Register(c *fiber.Ctx) error {
 	rur := new(dto.RegisterUserRequest)
 	if err := c.BodyParser(rur); err != nil {
@@ -41,6 +51,16 @@ func (ah *AuthHandler) Register(c *fiber.Ctx) error {
 	return c.JSON(u)
 }
 
+// Login
+// @Summary      Login a user
+// @Description  Login a user and get a JWT
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Param        request body dto.LoginUserRequest true "request body"
+// @Success      200  {object}  string
+// @Failure      500  {object}  error
+// @Router       /api/auth/login [post]
 func (ah *AuthHandler) Login(c *fiber.Ctx) error {
 	lur := new(dto.LoginUserRequest)
 	if err := c.BodyParser(lur); err != nil {
