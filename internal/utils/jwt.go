@@ -9,7 +9,7 @@ import (
 
 func GenerateToken(user model.User) (string, error) {
 	key := []byte(os.Getenv("SECRET_KEY"))
-	t := jwt.NewWithClaims(jwt.SigningMethodES256,
+	t := jwt.NewWithClaims(jwt.SigningMethodHS256,
 		jwt.MapClaims{
 			"name":     user.Name,
 			"username": user.Username,
