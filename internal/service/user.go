@@ -23,15 +23,12 @@ func NewUserService(r repository.IUserRepository) *UserService {
 }
 
 func (us *UserService) Register(name, username, pass string) (model.User, error) {
-	fmt.Println(">>>>>>> service auth register")
 	hashPass, err := utils.HashPassword(pass)
-	fmt.Println(">>>>>>> service auth register level 2")
 	if err != nil {
 		return model.User{}, err
 	}
 	fmt.Println(name, username, hashPass)
 	u, err := us.r.CreateUser(name, username, hashPass)
-	fmt.Println(">>>>>>> service auth register level 3")
 	if err != nil {
 		return model.User{}, err
 	}

@@ -4,7 +4,6 @@ import (
 	"devtasker/internal/dto"
 	"devtasker/internal/service"
 	"devtasker/internal/utils"
-	"fmt"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -29,15 +28,12 @@ func NewAuthHandler(s service.IUserService) *AuthHandler {
 }
 
 func (ah *AuthHandler) Register(c *fiber.Ctx) error {
-	fmt.Println(">>>>>>> handler auth register")
 	rur := new(dto.RegisterUserRequest)
 	if err := c.BodyParser(rur); err != nil {
 		utils.ErrorLogger.Println("Failed to parse the body:\n", c.Body())
 		return c.Status(fiber.StatusInternalServerError).JSON(err)
 	}
-	fmt.Println(">>>>>>> handler auth register level 2")
 	u, err := ah.s.Register(rur.Name, rur.Username, rur.Passwrod)
-	fmt.Println(">>>>>>> handler auth register level 3")
 	if err != nil {
 		utils.ErrorLogger.Println("Failed to register the user:\n", err)
 		return c.Status(fiber.StatusInternalServerError).JSON(err)
