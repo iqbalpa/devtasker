@@ -9,9 +9,9 @@ import (
 )
 
 type ITaskService interface {
-	CreateTask(ctx context.Context, title, description string) (model.Task, error)
-	GetTaskByID(ctx context.Context, id string) (model.Task, error)
 	GetAllTasks(ctx context.Context) ([]model.Task, error)
+	GetTaskByID(ctx context.Context, id string) (model.Task, error)
+	CreateTask(ctx context.Context, title, description string) (model.Task, error)
 	UpdateTask(ctx context.Context, id, title, description string, status model.TaskStatus) (model.Task, error)
 	DeleteTask(ctx context.Context, id string) (model.Task, error)
 }
@@ -26,16 +26,13 @@ func New(r repository.ITaskRepository) *TaskService {
 	}
 }
 
-func (ts *TaskService) CreateTask(ctx context.Context, title, description string) (model.Task, error) {
-	if title == "" || description == "" {
-		return model.Task{}, fmt.Errorf("title and description cannot be empty")
-	}
+func (ts *TaskService) GetAllTasks(ctx context.Context) ([]model.Task, error) {
 	username, _ := ctx.Value(utils.UsernameKey).(string)
-	t, err := ts.r.CreateTask(username, title, description)
+	tasks, err := ts.r.GetAllTasks(username)
 	if err != nil {
-		return model.Task{}, err
+		return []model.Task{}, nil
 	}
-	return t, nil
+	return tasks, nil
 }
 
 func (ts *TaskService) GetTaskByID(ctx context.Context, id string) (model.Task, error) {
@@ -50,13 +47,16 @@ func (ts *TaskService) GetTaskByID(ctx context.Context, id string) (model.Task, 
 	return t, nil
 }
 
-func (ts *TaskService) GetAllTasks(ctx context.Context) ([]model.Task, error) {
-	username, _ := ctx.Value(utils.UsernameKey).(string)
-	tasks, err := ts.r.GetAllTasks(username)
-	if err != nil {
-		return []model.Task{}, nil
+func (ts *TaskService) CreateTask(ctx context.Context, title, description string) (model.Task, error) {
+	if title == "" || description == "" {
+		return model.Task{}, fmt.Errorf("title and description cannot be empty")
 	}
-	return tasks, nil
+	username, _ := ctx.Value(utils.UsernameKey).(string)
+	t, err := ts.r.CreateTask(username, title, description)
+	if err != nil {
+		return model.Task{}, err
+	}
+	return t, nil
 }
 
 func (ts *TaskService) UpdateTask(ctx context.Context, id, title, description string, status model.TaskStatus) (model.Task, error) {
