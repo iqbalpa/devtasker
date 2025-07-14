@@ -1,11 +1,19 @@
 package middleware
 
 import (
+	"context"
 	"devtasker/internal/utils"
 	"strings"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+)
+
+type ContextKey string
+
+const (
+	UsernameKey ContextKey = "username"
+	NameKey     ContextKey = "name"
 )
 
 func Authorization(c *fiber.Ctx) error {
@@ -39,8 +47,9 @@ func Authorization(c *fiber.Ctx) error {
 		}
 	}
 
-	c.Locals("username", claims["username"])
-	c.Locals("name", claims["name"])
+	ctx := context.WithValue(c.Context(), UsernameKey, claims["username"])
+	ctx = context.WithValue(ctx, NameKey, claims["name"])
+	c.SetUserContext(ctx)
 
 	return c.Next()
 }

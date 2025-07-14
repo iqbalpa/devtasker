@@ -9,4 +9,6 @@ type User struct {
 	PasswordHash string    `json:"password"`
 	CreatedAt    time.Time `json:"created_at"`
 	UpdatedAt    time.Time `json:"updated_at"`
+
+	Tasks []Task `gorm:"foreignKey:UserUsername;references:Username"`
 }
