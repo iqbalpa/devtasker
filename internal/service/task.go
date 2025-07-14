@@ -11,7 +11,7 @@ import (
 type ITaskService interface {
 	CreateTask(ctx context.Context, title, description string) (model.Task, error)
 	GetTaskByID(id string) (model.Task, error)
-	GetAllTasks() ([]model.Task, error)
+	GetAllTasks(ctx context.Context) ([]model.Task, error)
 	UpdateTask(id, title, description string, status model.TaskStatus) (model.Task, error)
 	DeleteTask(id string) (model.Task, error)
 }
@@ -46,8 +46,9 @@ func (ts *TaskService) GetTaskByID(id string) (model.Task, error) {
 	return t, nil
 }
 
-func (ts *TaskService) GetAllTasks() ([]model.Task, error) {
-	tasks, err := ts.r.GetAllTasks()
+func (ts *TaskService) GetAllTasks(ctx context.Context) ([]model.Task, error) {
+	username, _ := ctx.Value(utils.UsernameKey).(string)
+	tasks, err := ts.r.GetAllTasks(username)
 	if err != nil {
 		return []model.Task{}, nil
 	}

@@ -64,7 +64,8 @@ func (th *TaskHandler) CreateTask(c *fiber.Ctx) error {
 // @Failure      500  {object}  error
 // @Router       /api/task [get]
 func (th *TaskHandler) GetAllTasks(c *fiber.Ctx) error {
-	tasks, err := th.s.GetAllTasks()
+	ctx := c.UserContext()
+	tasks, err := th.s.GetAllTasks(ctx)
 	if err != nil {
 		utils.ErrorLogger.Println("Failed to get all tasks:\n", err)
 		return c.Status(fiber.StatusInternalServerError).JSON(err)

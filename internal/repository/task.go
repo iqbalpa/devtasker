@@ -9,7 +9,7 @@ import (
 type ITaskRepository interface {
 	CreateTask(username, title, description string) (model.Task, error)
 	GetTaskByID(id string) (model.Task, error)
-	GetAllTasks() ([]model.Task, error)
+	GetAllTasks(username string) ([]model.Task, error)
 	UpdateTask(id, title, description string, status model.TaskStatus) (model.Task, error)
 	DeleteTask(id string) (model.Task, error)
 }
@@ -44,9 +44,9 @@ func (tr *TaskRepository) GetTaskByID(id string) (model.Task, error) {
 	return task, nil
 }
 
-func (tr *TaskRepository) GetAllTasks() ([]model.Task, error) {
+func (tr *TaskRepository) GetAllTasks(username string) ([]model.Task, error) {
 	var tasks []model.Task
-	result := tr.db.Find(&tasks)
+	result := tr.db.Where("user_username = ?", username).Find(&tasks)
 	if result.Error != nil {
 		return []model.Task{}, result.Error
 	}
