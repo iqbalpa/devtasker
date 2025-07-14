@@ -10,7 +10,7 @@ import (
 
 type ITaskService interface {
 	CreateTask(ctx context.Context, title, description string) (model.Task, error)
-	GetTaskByID(id string) (model.Task, error)
+	GetTaskByID(ctx context.Context, id string) (model.Task, error)
 	GetAllTasks(ctx context.Context) ([]model.Task, error)
 	UpdateTask(id, title, description string, status model.TaskStatus) (model.Task, error)
 	DeleteTask(id string) (model.Task, error)
@@ -38,10 +38,14 @@ func (ts *TaskService) CreateTask(ctx context.Context, title, description string
 	return t, nil
 }
 
-func (ts *TaskService) GetTaskByID(id string) (model.Task, error) {
+func (ts *TaskService) GetTaskByID(ctx context.Context, id string) (model.Task, error) {
 	t, err := ts.r.GetTaskByID(id)
 	if err != nil {
 		return model.Task{}, err
+	}
+	username, _ := ctx.Value(utils.UsernameKey).(string)
+	if t.UserUsername != username {
+		return model.Task{}, fmt.Errorf("you don't have permission to access this task")
 	}
 	return t, nil
 }

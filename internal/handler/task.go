@@ -83,8 +83,9 @@ func (th *TaskHandler) GetAllTasks(c *fiber.Ctx) error {
 // @Failure      404  {object}  error
 // @Router       /api/task/{id} [get]
 func (th *TaskHandler) GetTaskByID(c *fiber.Ctx) error {
+	ctx := c.UserContext()
 	id := c.Params("id")
-	t, err := th.s.GetTaskByID(id)
+	t, err := th.s.GetTaskByID(ctx, id)
 	if err != nil {
 		utils.ErrorLogger.Printf("Failed to get task with id %s:\n%s", id, err)
 		return c.Status(fiber.StatusNotFound).JSON(err)
