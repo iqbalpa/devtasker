@@ -35,6 +35,7 @@ These are things that I want to implement here.
 - **Live Reloading:** With Air for a better development experience.
 - **Kubernetes Deployment:** Ready for deployment in a Kubernetes environment.
 - **Authentication:** JWT-based authentication for secure endpoints.
+- **User-Task Association:** Tasks are associated with the user who created them, so users can only manage their own tasks.
 
 ## How to Run
 
@@ -118,15 +119,15 @@ To easily access the services, you can run `minikube service <service-name>`, wh
 
 All endpoints are prefixed with `/api`.
 
-| Method | Endpoint           | Description              |
-| ------ | ------------------ | ------------------------ |
-| POST   | `/auth/register`   | Register a new user      |
-| POST   | `/auth/login`      | Login and get a JWT      |
-| POST   | `/task`            | Create a new task        |
-| GET    | `/task`            | Get all tasks            |
-| GET    | `/task/:id`        | Get a task by ID         |
-| PATCH  | `/task/:id`        | Update a task            |
-| DELETE | `/task/:id`        | Delete a task            |
+| Method | Endpoint           | Description                                      |
+| ------ | ------------------ | ------------------------------------------------ |
+| POST   | `/auth/register`   | Register a new user                              |
+| POST   | `/auth/login`      | Login and get a JWT                              |
+| POST   | `/task`            | Create a new task for the authenticated user     |
+| GET    | `/task`            | Get all tasks belonging to the authenticated user|
+| GET    | `/task/:id`        | Get a specific task by ID                        |
+| PATCH  | `/task/:id`        | Update a specific task                           |
+| DELETE | `/task/:id`        | Delete a specific task                           |
 
 - **Swagger Docs:** `http://localhost/doc`
 - **Health Check:** `http://localhost/health`
