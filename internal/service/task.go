@@ -1,13 +1,15 @@
 package service
 
 import (
+	"context"
 	"devtasker/internal/model"
 	"devtasker/internal/repository"
+	"devtasker/internal/utils"
 	"fmt"
 )
 
 type ITaskService interface {
-	CreateTask(title, description string) (model.Task, error)
+	CreateTask(ctx context.Context, title, description string) (model.Task, error)
 	GetTaskByID(id string) (model.Task, error)
 	GetAllTasks() ([]model.Task, error)
 	UpdateTask(id, title, description string, status model.TaskStatus) (model.Task, error)
@@ -24,11 +26,12 @@ func New(r repository.ITaskRepository) *TaskService {
 	}
 }
 
-func (ts *TaskService) CreateTask(title, description string) (model.Task, error) {
+func (ts *TaskService) CreateTask(ctx context.Context, title, description string) (model.Task, error) {
 	if title == "" || description == "" {
 		return model.Task{}, fmt.Errorf("title and description cannot be empty")
 	}
-	t, err := ts.r.CreateTask(title, description)
+	username, _ := ctx.Value(utils.UsernameKey).(string)
+	t, err := ts.r.CreateTask(username, title, description)
 	if err != nil {
 		return model.Task{}, err
 	}

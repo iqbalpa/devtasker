@@ -7,7 +7,7 @@ import (
 )
 
 type ITaskRepository interface {
-	CreateTask(title, description string) (model.Task, error)
+	CreateTask(username, title, description string) (model.Task, error)
 	GetTaskByID(id string) (model.Task, error)
 	GetAllTasks() ([]model.Task, error)
 	UpdateTask(id, title, description string, status model.TaskStatus) (model.Task, error)
@@ -24,11 +24,12 @@ func New(db *gorm.DB) *TaskRepository {
 	}
 }
 
-func (tr *TaskRepository) CreateTask(title, description string) (model.Task, error) {
+func (tr *TaskRepository) CreateTask(username, title, description string) (model.Task, error) {
 	t := model.Task{
-		Title:       title,
-		Description: description,
-		Status:      model.Pending,
+		Title:        title,
+		Description:  description,
+		Status:       model.Pending,
+		UserUsername: username,
 	}
 	tr.db.Create(&t)
 	return t, nil

@@ -41,12 +41,13 @@ func New(s service.ITaskService) *TaskHandler {
 // @Failure      500  {object}  error
 // @Router       /api/task [post]
 func (th *TaskHandler) CreateTask(c *fiber.Ctx) error {
+	ctx := c.UserContext()
 	ctr := new(dto.CreateTaskRequest)
 	if err := c.BodyParser(ctr); err != nil {
 		utils.ErrorLogger.Println("Failed to parse the body:\n", c.Body())
 		return err
 	}
-	t, err := th.s.CreateTask(ctr.Title, ctr.Description)
+	t, err := th.s.CreateTask(ctx, ctr.Title, ctr.Description)
 	if err != nil {
 		utils.ErrorLogger.Println("Failed to create a new task:\n", err)
 		return c.Status(fiber.StatusInternalServerError).JSON(err)

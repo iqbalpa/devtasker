@@ -9,13 +9,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type ContextKey string
-
-const (
-	UsernameKey ContextKey = "username"
-	NameKey     ContextKey = "name"
-)
-
 func Authorization(c *fiber.Ctx) error {
 	if strings.Contains(c.Path(), "auth") ||
 		strings.Contains(c.Path(), "doc") ||
@@ -47,8 +40,8 @@ func Authorization(c *fiber.Ctx) error {
 		}
 	}
 
-	ctx := context.WithValue(c.Context(), UsernameKey, claims["username"])
-	ctx = context.WithValue(ctx, NameKey, claims["name"])
+	ctx := context.WithValue(c.Context(), utils.UsernameKey, claims["username"])
+	ctx = context.WithValue(ctx, utils.NameKey, claims["name"])
 	c.SetUserContext(ctx)
 
 	return c.Next()
