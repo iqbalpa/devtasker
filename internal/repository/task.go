@@ -7,9 +7,9 @@ import (
 )
 
 type ITaskRepository interface {
-	CreateTask(title, description string) (model.Task, error)
+	GetAllTasks(username string) ([]model.Task, error)
 	GetTaskByID(id string) (model.Task, error)
-	GetAllTasks() ([]model.Task, error)
+	CreateTask(username, title, description string) (model.Task, error)
 	UpdateTask(id, title, description string, status model.TaskStatus) (model.Task, error)
 	DeleteTask(id string) (model.Task, error)
 }
@@ -24,14 +24,13 @@ func New(db *gorm.DB) *TaskRepository {
 	}
 }
 
-func (tr *TaskRepository) CreateTask(title, description string) (model.Task, error) {
-	t := model.Task{
-		Title:       title,
-		Description: description,
-		Status:      model.Pending,
+func (tr *TaskRepository) GetAllTasks(username string) ([]model.Task, error) {
+	var tasks []model.Task
+	result := tr.db.Where("user_username = ?", username).Find(&tasks)
+	if result.Error != nil {
+		return []model.Task{}, result.Error
 	}
-	tr.db.Create(&t)
-	return t, nil
+	return tasks, nil
 }
 
 func (tr *TaskRepository) GetTaskByID(id string) (model.Task, error) {
@@ -43,13 +42,15 @@ func (tr *TaskRepository) GetTaskByID(id string) (model.Task, error) {
 	return task, nil
 }
 
-func (tr *TaskRepository) GetAllTasks() ([]model.Task, error) {
-	var tasks []model.Task
-	result := tr.db.Find(&tasks)
-	if result.Error != nil {
-		return []model.Task{}, result.Error
+func (tr *TaskRepository) CreateTask(username, title, description string) (model.Task, error) {
+	t := model.Task{
+		Title:        title,
+		Description:  description,
+		Status:       model.Pending,
+		UserUsername: username,
 	}
-	return tasks, nil
+	tr.db.Create(&t)
+	return t, nil
 }
 
 func (tr *TaskRepository) UpdateTask(id, title, description string, status model.TaskStatus) (model.Task, error) {

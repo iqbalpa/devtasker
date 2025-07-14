@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"context"
 	"devtasker/internal/utils"
 	"strings"
 	"time"
@@ -39,8 +40,9 @@ func Authorization(c *fiber.Ctx) error {
 		}
 	}
 
-	c.Locals("username", claims["username"])
-	c.Locals("name", claims["name"])
+	ctx := context.WithValue(c.Context(), utils.UsernameKey, claims["username"])
+	ctx = context.WithValue(ctx, utils.NameKey, claims["name"])
+	c.SetUserContext(ctx)
 
 	return c.Next()
 }

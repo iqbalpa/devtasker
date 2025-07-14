@@ -41,12 +41,13 @@ func New(s service.ITaskService) *TaskHandler {
 // @Failure      500  {object}  error
 // @Router       /api/task [post]
 func (th *TaskHandler) CreateTask(c *fiber.Ctx) error {
+	ctx := c.UserContext()
 	ctr := new(dto.CreateTaskRequest)
 	if err := c.BodyParser(ctr); err != nil {
 		utils.ErrorLogger.Println("Failed to parse the body:\n", c.Body())
 		return err
 	}
-	t, err := th.s.CreateTask(ctr.Title, ctr.Description)
+	t, err := th.s.CreateTask(ctx, ctr.Title, ctr.Description)
 	if err != nil {
 		utils.ErrorLogger.Println("Failed to create a new task:\n", err)
 		return c.Status(fiber.StatusInternalServerError).JSON(err)
@@ -63,7 +64,8 @@ func (th *TaskHandler) CreateTask(c *fiber.Ctx) error {
 // @Failure      500  {object}  error
 // @Router       /api/task [get]
 func (th *TaskHandler) GetAllTasks(c *fiber.Ctx) error {
-	tasks, err := th.s.GetAllTasks()
+	ctx := c.UserContext()
+	tasks, err := th.s.GetAllTasks(ctx)
 	if err != nil {
 		utils.ErrorLogger.Println("Failed to get all tasks:\n", err)
 		return c.Status(fiber.StatusInternalServerError).JSON(err)
@@ -81,8 +83,9 @@ func (th *TaskHandler) GetAllTasks(c *fiber.Ctx) error {
 // @Failure      404  {object}  error
 // @Router       /api/task/{id} [get]
 func (th *TaskHandler) GetTaskByID(c *fiber.Ctx) error {
+	ctx := c.UserContext()
 	id := c.Params("id")
-	t, err := th.s.GetTaskByID(id)
+	t, err := th.s.GetTaskByID(ctx, id)
 	if err != nil {
 		utils.ErrorLogger.Printf("Failed to get task with id %s:\n%s", id, err)
 		return c.Status(fiber.StatusNotFound).JSON(err)
@@ -102,6 +105,7 @@ func (th *TaskHandler) GetTaskByID(c *fiber.Ctx) error {
 // @Failure      500     {object}  error
 // @Router       /api/task/{id} [patch]
 func (th *TaskHandler) UpdateTask(c *fiber.Ctx) error {
+	ctx := c.UserContext()
 	id := c.Params("id")
 	b := new(dto.UpdateTaskRequest)
 	if err := c.BodyParser(b); err != nil {
@@ -109,6 +113,7 @@ func (th *TaskHandler) UpdateTask(c *fiber.Ctx) error {
 		return err
 	}
 	t, err := th.s.UpdateTask(
+		ctx, 
 		id,
 		b.Title,
 		b.Description,
@@ -131,8 +136,9 @@ func (th *TaskHandler) UpdateTask(c *fiber.Ctx) error {
 // @Failure      500  {object}  error
 // @Router       /api/task/{id} [delete]
 func (th *TaskHandler) DeleteTask(c *fiber.Ctx) error {
+	ctx := c.UserContext()
 	id := c.Params("id")
-	t, err := th.s.DeleteTask(id)
+	t, err := th.s.DeleteTask(ctx, id)
 	if err != nil {
 		utils.ErrorLogger.Printf("Failed to delete task with id %s:\n%s", id, err)
 		return c.Status(fiber.StatusInternalServerError).JSON(err)
