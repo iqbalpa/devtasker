@@ -105,6 +105,7 @@ func (th *TaskHandler) GetTaskByID(c *fiber.Ctx) error {
 // @Failure      500     {object}  error
 // @Router       /api/task/{id} [patch]
 func (th *TaskHandler) UpdateTask(c *fiber.Ctx) error {
+	ctx := c.UserContext()
 	id := c.Params("id")
 	b := new(dto.UpdateTaskRequest)
 	if err := c.BodyParser(b); err != nil {
@@ -112,6 +113,7 @@ func (th *TaskHandler) UpdateTask(c *fiber.Ctx) error {
 		return err
 	}
 	t, err := th.s.UpdateTask(
+		ctx, 
 		id,
 		b.Title,
 		b.Description,

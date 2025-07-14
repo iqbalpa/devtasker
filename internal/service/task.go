@@ -12,7 +12,7 @@ type ITaskService interface {
 	CreateTask(ctx context.Context, title, description string) (model.Task, error)
 	GetTaskByID(ctx context.Context, id string) (model.Task, error)
 	GetAllTasks(ctx context.Context) ([]model.Task, error)
-	UpdateTask(id, title, description string, status model.TaskStatus) (model.Task, error)
+	UpdateTask(ctx context.Context, id, title, description string, status model.TaskStatus) (model.Task, error)
 	DeleteTask(id string) (model.Task, error)
 }
 
@@ -59,10 +59,24 @@ func (ts *TaskService) GetAllTasks(ctx context.Context) ([]model.Task, error) {
 	return tasks, nil
 }
 
-func (ts *TaskService) UpdateTask(id, title, description string, status model.TaskStatus) (model.Task, error) {
+func (ts *TaskService) UpdateTask(ctx context.Context, id, title, description string, status model.TaskStatus) (model.Task, error) {
 	if title == "" || description == "" || status == "" {
 		return model.Task{}, fmt.Errorf("title and description cannot be empty")
 	}
+	
+	// Step 1: Get task by ID
+	task, err := ts.r.GetTaskByID(id)
+	if err != nil {
+		return model.Task{}, fmt.Errorf("task not found")
+	}
+
+	// Step 2: Check ownership
+	username, _ := ctx.Value(utils.UsernameKey).(string)
+	if task.UserUsername != username {
+		return model.Task{}, fmt.Errorf("you don't have permission to access this task")
+	}
+
+	// Step 3: Update the task
 	t, err := ts.r.UpdateTask(id, title, description, status)
 	if err != nil {
 		return model.Task{}, err
