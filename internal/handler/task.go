@@ -136,8 +136,9 @@ func (th *TaskHandler) UpdateTask(c *fiber.Ctx) error {
 // @Failure      500  {object}  error
 // @Router       /api/task/{id} [delete]
 func (th *TaskHandler) DeleteTask(c *fiber.Ctx) error {
+	ctx := c.UserContext()
 	id := c.Params("id")
-	t, err := th.s.DeleteTask(id)
+	t, err := th.s.DeleteTask(ctx, id)
 	if err != nil {
 		utils.ErrorLogger.Printf("Failed to delete task with id %s:\n%s", id, err)
 		return c.Status(fiber.StatusInternalServerError).JSON(err)

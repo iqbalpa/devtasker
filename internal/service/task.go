@@ -13,7 +13,7 @@ type ITaskService interface {
 	GetTaskByID(ctx context.Context, id string) (model.Task, error)
 	GetAllTasks(ctx context.Context) ([]model.Task, error)
 	UpdateTask(ctx context.Context, id, title, description string, status model.TaskStatus) (model.Task, error)
-	DeleteTask(id string) (model.Task, error)
+	DeleteTask(ctx context.Context, id string) (model.Task, error)
 }
 
 type TaskService struct {
@@ -63,19 +63,16 @@ func (ts *TaskService) UpdateTask(ctx context.Context, id, title, description st
 	if title == "" || description == "" || status == "" {
 		return model.Task{}, fmt.Errorf("title and description cannot be empty")
 	}
-	
 	// Step 1: Get task by ID
 	task, err := ts.r.GetTaskByID(id)
 	if err != nil {
 		return model.Task{}, fmt.Errorf("task not found")
 	}
-
 	// Step 2: Check ownership
 	username, _ := ctx.Value(utils.UsernameKey).(string)
 	if task.UserUsername != username {
 		return model.Task{}, fmt.Errorf("you don't have permission to access this task")
 	}
-
 	// Step 3: Update the task
 	t, err := ts.r.UpdateTask(id, title, description, status)
 	if err != nil {
@@ -84,7 +81,18 @@ func (ts *TaskService) UpdateTask(ctx context.Context, id, title, description st
 	return t, nil
 }
 
-func (ts *TaskService) DeleteTask(id string) (model.Task, error) {
+func (ts *TaskService) DeleteTask(ctx context.Context, id string) (model.Task, error) {
+	// Step 1: Get task by ID
+	task, err := ts.r.GetTaskByID(id)
+	if err != nil {
+		return model.Task{}, fmt.Errorf("task not found")
+	}
+	// Step 2: Check ownership
+	username, _ := ctx.Value(utils.UsernameKey).(string)
+	if task.UserUsername != username {
+		return model.Task{}, fmt.Errorf("you don't have permission to access this task")
+	}
+	// Step 3: Delete the task
 	t, err := ts.r.DeleteTask(id)
 	if err != nil {
 		return model.Task{}, err
