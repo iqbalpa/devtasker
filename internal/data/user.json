@@ -1,0 +1,82 @@
+[
+  {
+    "id": "ecd1993c-c0ee-4f94-8de3-6c204a1491bf",
+    "name": "Alice123",
+    "username": "alice123",
+    "password": "hashed_password_1",
+    "created_at": "2025-07-02T08:00:00Z",
+    "updated_at": "2025-07-10T08:00:00Z"
+  },
+  {
+    "id": "b500f263-3ce0-4002-bccb-28df4d4956a8",
+    "name": "Bob smith",
+    "username": "bob_smith",
+    "password": "hashed_password_2",
+    "created_at": "2025-07-03T08:00:00Z",
+    "updated_at": "2025-07-10T08:00:00Z"
+  },
+  {
+    "id": "f6960e96-5345-4960-a335-32495fee5747",
+    "name": "Carolw",
+    "username": "carolw",
+    "password": "hashed_password_3",
+    "created_at": "2025-07-04T08:00:00Z",
+    "updated_at": "2025-07-10T08:00:00Z"
+  },
+  {
+    "id": "3310dffc-0da5-4592-b830-6c37fbdf0d10",
+    "name": "Dave b",
+    "username": "dave_b",
+    "password": "hashed_password_4",
+    "created_at": "2025-07-05T08:00:00Z",
+    "updated_at": "2025-07-10T08:00:00Z"
+  },
+  {
+    "id": "a617b868-b475-4c2a-8053-897054b3cb7b",
+    "name": "Eveb",
+    "username": "eveb",
+    "password": "hashed_password_5",
+    "created_at": "2025-07-06T08:00:00Z",
+    "updated_at": "2025-07-10T08:00:00Z"
+  },
+  {
+    "id": "d029077b-58a2-448e-9ee3-51d6062816ef",
+    "name": "Frankg",
+    "username": "frankg",
+    "password": "hashed_password_6",
+    "created_at": "2025-07-07T08:00:00Z",
+    "updated_at": "2025-07-10T08:00:00Z"
+  },
+  {
+    "id": "a15bb63d-b6ed-47b8-a074-53bb10288956",
+    "name": "Gracelee",
+    "username": "gracelee",
+    "password": "hashed_password_7",
+    "created_at": "2025-07-08T08:00:00Z",
+    "updated_at": "2025-07-10T08:00:00Z"
+  },
+  {
+    "id": "32fe3c3c-7fe2-4f18-9493-215a86d19071",
+    "name": "Henryk",
+    "username": "henryk",
+    "password": "hashed_password_8",
+    "created_at": "2025-07-09T08:00:00Z",
+    "updated_at": "2025-07-10T08:00:00Z"
+  },
+  {
+    "id": "a36d15ea-af36-4672-8c39-e8956ab6d6c2",
+    "name": "Ivya",
+    "username": "ivya",
+    "password": "hashed_password_9",
+    "created_at": "2025-07-10T08:00:00Z",
+    "updated_at": "2025-07-10T08:00:00Z"
+  },
+  {
+    "id": "49c79996-4148-4694-8f11-d874bae75739",
+    "name": "Jackw",
+    "username": "jackw",
+    "password": "hashed_password_10",
+    "created_at": "2025-07-11T08:00:00Z",
+    "updated_at": "2025-07-10T08:00:00Z"
+  }
+]

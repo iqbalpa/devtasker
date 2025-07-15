@@ -10,9 +10,14 @@ import (
 	"gorm.io/gorm"
 )
 
-func readFile() []byte {
+const (
+	UserDataPath string = "user.json"
+	TaskDataPath string = "task.json"
+)
+
+func readFile(fname string) []byte {
 	dir, _ := os.Getwd()
-	fpath := fmt.Sprintf("%s/internal/utils/data.json", dir)
+	fpath := fmt.Sprintf("%s/internal/data/%s", dir, fname)
 	jsonFile, err := os.Open(fpath)
 	if err != nil {
 		fmt.Println("Failed to read data.json", err)
@@ -23,14 +28,16 @@ func readFile() []byte {
 	return byteVal
 }
 
-func getDummyData() []*model.Task {
-	var tasks []*model.Task
-	byteVal := readFile()
-	json.Unmarshal(byteVal, &tasks)
-	return tasks
+func getDummyData[T any](fname string) []T {
+	var data []T
+	byteVal := readFile(fname)
+	json.Unmarshal(byteVal, &data)
+	return data
 }
 
 func SeedTasks(db *gorm.DB) {
-	data := getDummyData()
-	db.Save(data)
+	tasks := getDummyData[model.Task](TaskDataPath)
+	db.Save(tasks)
+	users := getDummyData[model.User](UserDataPath)
+	db.Save(users)
 }
