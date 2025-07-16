@@ -1,0 +1,9 @@
+type Task {
+    id: ID!
+    title: String!
+    description: String!
+    status: String!
+    CreatedAt: String!
+    UpdatedAt: String!
+    UserUsername: String!
+}
